@@ -80,12 +80,10 @@ def createShip():
     row_centre=random.randint(1,8)
     col_centre=random.randint(1,8)
     orientation=random.randint(0,1)
-    ship_placement=[[],[],[]]
     if orientation==0:
-        ship_placement=[[row_centre,col_centre-1],[row_centre,col_centre],[row_centre,col_centre+1]]
+        return [[row_centre,col_centre-1],[row_centre,col_centre],[row_centre,col_centre+1]]
     else:
-        ship_placement=[[row_centre-1,col_centre],[row_centre,col_centre],[row_centre+1,col_centre]]
-    return ship_placement
+        return [[row_centre-1,col_centre],[row_centre,col_centre],[row_centre+1,col_centre]]
 
 
 '''
