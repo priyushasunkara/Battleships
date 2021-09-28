@@ -118,7 +118,7 @@ def addShips(grid, numShips):
                 a=each[0]
                 b=each[1]
                 grid[a][b]=SHIP_UNCLICKED
-        count=count+1
+            count=count+1
     return grid
 
 
