@@ -70,7 +70,7 @@ def emptyGrid(rows, cols):
         list_1.append(list_2)
     return list_1
 
-
+    
 '''
 createShip()
 Parameters: no parameters
@@ -118,7 +118,7 @@ def addShips(grid, numShips):
                 a=each[0]
                 b=each[1]
                 grid[a][b]=SHIP_UNCLICKED
-        count=count+1
+            count=count+1
     return grid
 
 
