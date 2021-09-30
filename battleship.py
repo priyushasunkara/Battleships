@@ -32,8 +32,8 @@ def makeModel(data):
     data["numBoards"] = 2
     data["numShips"] = 5
     data["computerBoard"] = emptyGrid(data["rows"],data["cols"]) 
-    # data["user Board"] = emptyGrid(data["Number of rows"],data["Number of cols"]) 
-    data["userBoard"] = test.testGrid()
+    data["user Board"] = emptyGrid(data["Number of rows"],data["Number of cols"]) 
+    #data["userBoard"] = test.testGrid()
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
     return 
  
@@ -145,9 +145,9 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
-    for col in range(data["cols"]):
-        for row in range(data["rows"]):
-            if grid[col][row] == SHIP_UNCLICKED: 
+    for row in range(data["rows"]):
+        for col in range(data["cols"]):
+            if grid[row][col] == SHIP_UNCLICKED: 
                 canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="yellow")
             else:
                 canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="blue")
@@ -163,7 +163,15 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    index1=[]
+    index2=[]
+    for each in ship:
+        index1.append(each[0])
+        index2.append(each[1])
+    if index2[0]==index2[1] and index2[1]==index2[2]:
+        if max(index1)-min(index1)<=2:
+            return True
+    return False
 
 
 '''
@@ -172,7 +180,15 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
+    index1=[]
+    index2=[]
+    for each in ship:
+        index1.append(each[0])
+        index2.append(each[1])
+    if index1[0]==index1[1] and index1[1]==index1[2]:
+        if max(index2)-min(index2)<=2:
+            return True
+    return False
 
 
 '''
@@ -324,4 +340,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
+    #runSimulation(500, 500)
+    test.testIsHorizontal()
