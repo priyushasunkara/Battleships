@@ -32,7 +32,7 @@ def makeModel(data):
     data["numBoards"] = 2
     data["numShips"] = 5
     data["computerBoard"] = emptyGrid(data["rows"],data["cols"]) 
-    data["user Board"] = emptyGrid(data["Number of rows"],data["Number of cols"]) 
+    data["user Board"] = emptyGrid(data["rows"],data["cols"]) 
     #data["userBoard"] = test.testGrid()
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
     return 
@@ -129,7 +129,6 @@ def addShips(grid, numShips):
     while count<numShips:
         ship=createShip()
         if checkShip(grid,ship)==True:
-            print(count)
             for each in ship:
                 a=each[0]
                 b=each[1]
@@ -163,14 +162,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    index1=[]
-    index2=[]
-    for each in ship:
-        index1.append(each[0])
-        index2.append(each[1])
-    if index2[0]==index2[1] and index2[1]==index2[2]:
-        if max(index1)-min(index1)<=2:
-            return True
+    if ship[0][1]==ship[1][1]==ship[2][1]:
+        ship.sort()
+        for row in ship:
+            if ship[0][0]+1==ship[1][0]==ship[2][0]-1:
+                return True
     return False
 
 
@@ -180,16 +176,12 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    index1=[]
-    index2=[]
-    for each in ship:
-        index1.append(each[0])
-        index2.append(each[1])
-    if index1[0]==index1[1] and index1[1]==index1[2]:
-        if max(index2)-min(index2)<=2:
-            return True
+    if ship[0][0]==ship[1][0]==ship[2][0]:
+        ship.sort()
+        for col in ship:
+            if ship[0][1]+1==ship[1][1]==ship[2][1]-1:
+                return True
     return False
-
 
 '''
 getClickedCell(data, event)
@@ -197,7 +189,9 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    x_coordinate=int(event.x/data["cellSize"])
+    y_coordinate=int(event.y/data["cellSize"])
+    return[y_coordinate,x_coordinate]
 
 
 '''
@@ -341,4 +335,4 @@ if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
     #runSimulation(500, 500)
-    test.testIsHorizontal()
+    test.testGetClickedCell()
