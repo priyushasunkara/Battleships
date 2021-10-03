@@ -191,8 +191,8 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    x_coordinate=int(event.x/data["cellSize"])
-    y_coordinate=int(event.y/data["cellSize"])
+    x_coordinate=int(event.x//data["cellSize"])
+    y_coordinate=int(event.y//data["cellSize"])
     return[y_coordinate,x_coordinate]
 
 
@@ -213,7 +213,10 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    return
+    if len(ship)==3:
+        if checkShip(grid,ship) and (isVertical(ship) or (isHorizontal(ship))):
+            return True
+    return False
 
 
 '''
@@ -222,6 +225,15 @@ Parameters: dict mapping strs to values
 Returns: None
 '''
 def placeShip(data):
+    if shipIsValid(data["user Board"],data["temporary_ship"]):
+        ship=data["temporary_ship"]
+        board=data["user Board"]
+        for i in range(len(ship)):
+            board[ship[i][0]][ship[i][1]]==SHIP_UNCLICKED
+            data["numUserShip"]+=1
+    else:
+        print("ship is not valid")
+    data["temporary_ship"]=[]
     return
 
 
@@ -231,6 +243,15 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
+    if data["numUserShip"]==5:
+        print("You can start the game")
+        return
+    for i in data["temporary_ship"]:
+        if [row,col]==i:
+            return
+    data["temporary_ship"].append([row,col])
+    if len(data["temporary_ship"])==3:
+        placeShip(data)
     return
 
 
@@ -338,5 +359,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
-    #test.testGetClickedCell()
+    #runSimulation(500, 500)
+    test.testShipIsValid()
