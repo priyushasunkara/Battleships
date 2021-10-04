@@ -35,7 +35,8 @@ def makeModel(data):
     data["user Board"] = emptyGrid(data["rows"],data["cols"]) 
     #data["userBoard"] = test.testGrid()
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
-    data["temporary_ship"]=test.testShip()
+    data["temporary_ship"]=[]
+    data["numUserShip"]=0
     return 
  
 
@@ -70,7 +71,10 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
-    pass
+    cell=getClickedCell(data,event)
+    if board=="user":
+        clickUserBoard(data,cell[0],cell[1])
+    return
 
 #### WEEK 1 ####
 
@@ -213,8 +217,8 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def shipIsValid(grid, ship):
-    if len(ship)==3:
-        if checkShip(grid,ship) and (isVertical(ship) or (isHorizontal(ship))):
+    if checkShip(grid,ship):
+        if isVertical(ship) or isHorizontal(ship):
             return True
     return False
 
@@ -226,10 +230,8 @@ Returns: None
 '''
 def placeShip(data):
     if shipIsValid(data["user Board"],data["temporary_ship"]):
-        ship=data["temporary_ship"]
-        board=data["user Board"]
-        for i in range(len(ship)):
-            board[ship[i][0]][ship[i][1]]==SHIP_UNCLICKED
+        for ship in data["temporary_ship"]:
+            data["user Board"][ship[0]][ship[1]]=SHIP_UNCLICKED
             data["numUserShip"]+=1
     else:
         print("ship is not valid")
@@ -246,12 +248,10 @@ def clickUserBoard(data, row, col):
     if data["numUserShip"]==5:
         print("You can start the game")
         return
-    for i in data["temporary_ship"]:
-        if [row,col]==i:
-            return
-    data["temporary_ship"].append([row,col])
-    if len(data["temporary_ship"])==3:
-        placeShip(data)
+    if [row,col] not in data["temporary_ship"]:
+        data["temporary_ship"].append([row,col])
+        if len(data["temporary_ship"])==3:
+            placeShip(data)
     return
 
 
@@ -359,5 +359,4 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    #runSimulation(500, 500)
-    test.testShipIsValid()
+    runSimulation(500, 500)
