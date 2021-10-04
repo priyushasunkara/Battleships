@@ -164,11 +164,9 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    if ship[0][1]==ship[1][1]==ship[2][1]:
-        ship.sort()
-        for row in ship:
-            if ship[0][0]+1==ship[1][0]==ship[2][0]-1:
-                return True
+    ship.sort()
+    if ship[0][0]+1==ship[1][0]==ship[2][0]-1 and ship[0][1]==ship[1][1]==ship[1][1]:
+        return True
     return False
 
 
@@ -178,11 +176,9 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    if ship[0][0]==ship[1][0]==ship[2][0]:
-        ship.sort()
-        for col in ship:
-            if ship[0][1]+1==ship[1][1]==ship[2][1]-1:
-                return True
+    ship.sort()
+    if ship[0][1]+1==ship[1][1]==ship[2][1]-1 and ship[0][0]==ship[1][0]==ship[1][0]:
+        return True
     return False
 
 '''
@@ -191,8 +187,8 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    x_coordinate=int(event.x//data["cellSize"])
-    y_coordinate=int(event.y//data["cellSize"])
+    x_coordinate=int(event.x/data["cellSize"])
+    y_coordinate=int(event.y/data["cellSize"])
     return[y_coordinate,x_coordinate]
 
 
@@ -228,7 +224,7 @@ def placeShip(data):
     if shipIsValid(data["user Board"],data["temporary_ship"]):
         for ship in data["temporary_ship"]:
             data["user Board"][ship[0]][ship[1]]=SHIP_UNCLICKED
-            data["numUserShips"]+=1
+        data["numUserShips"]+=1
     else:
         print("ship is not valid")
     data["temporary_ship"]=[]
