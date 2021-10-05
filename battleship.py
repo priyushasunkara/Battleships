@@ -37,11 +37,10 @@ def makeModel(data):
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
     data["temporary_ship"]=[]
     data["numUserShip"]=0
+    data["winner"]=None
     return 
  
-
-
-
+ 
 '''
 makeView(data, userCanvas, compCanvas)
 Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
@@ -49,9 +48,13 @@ Returns: None
 '''
 
 def makeView(data, userCanvas, compCanvas):
-    canvas= drawGrid(data,userCanvas,data["user Board"],True)
-    userCanvas=drawShip(data,userCanvas,data["temporary_ship"])
-    compCanvas= drawGrid(data,compCanvas,data["computerBoard"],True)
+    drawGrid(data,userCanvas,data["user Board"],True)
+    drawShip(data,userCanvas,data["temporary_ship"])
+    drawGrid(data,compCanvas,data["computerBoard"],True)
+    if data["winner"]=="user":
+        drawGameOver(data,userCanvas)
+    elif data["winner"]=="comp":
+        drawGameOver(data,compCanvas)
     return
 
 
@@ -74,7 +77,7 @@ def mousePressed(data, event, board):
     cell=getClickedCell(data,event)
     if board=="user":
         clickUserBoard(data,cell[0],cell[1])
-    if board=="comp":
+    elif board=="comp":
         runGameTurn(data,cell[0],cell[1])
     return
 
@@ -273,6 +276,8 @@ def updateBoard(data, board, row, col, player):
             board[row][col]=SHIP_CLICKED
         elif board[row][col]==EMPTY_UNCLICKED:
             board[row][col]=EMPTY_CLICKED
+    if isGameOver(board):
+        data["winner"]=player
     return
 
 
@@ -311,7 +316,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
-    return
+    for row in range(len(board)):
+        for col in range(len(board)):
+            if board[row][col]==SHIP_UNCLICKED:
+                return False
+    return True
 
 
 '''
@@ -320,6 +329,10 @@ Parameters: dict mapping strs to values ; Tkinter canvas
 Returns: None
 '''
 def drawGameOver(data, canvas):
+    if(data["winner"]=="user"):
+        canvas.create_text(100, 50, text="Congrats!! You Won!!", fill="white", font=("Arial 13 bold"))
+    if(data["winner"]=="comp"):
+        canvas.create_text(100 ,50, text="Try Again!! You Lost!!", fill="white", font=("Arial 13 bold"))
     return
 
 
@@ -383,3 +396,4 @@ if __name__ == "__main__":
     runSimulation(500, 500)
     #test.testUpdateBoard()
     #test.testGetComputerGuess()
+    #test.testIsGameOver()
