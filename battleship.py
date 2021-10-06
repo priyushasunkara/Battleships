@@ -32,8 +32,8 @@ def makeModel(data):
     data["numBoards"] = 2
     data["numShips"] = 5
     data["computerBoard"] = emptyGrid(data["rows"],data["cols"]) 
-    # data["user Board"] = emptyGrid(data["Number of rows"],data["Number of cols"]) 
-    data["userBoard"] = test.testGrid()
+    data["user Board"] = emptyGrid(data["rows"],data["cols"]) 
+    #data["userBoard"] = test.testGrid()
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
     return 
  
@@ -129,7 +129,6 @@ def addShips(grid, numShips):
     while count<numShips:
         ship=createShip()
         if checkShip(grid,ship)==True:
-            print(count)
             for each in ship:
                 a=each[0]
                 b=each[1]
@@ -145,9 +144,9 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; boo
 Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips):
-    for col in range(data["cols"]):
-        for row in range(data["rows"]):
-            if grid[col][row] == SHIP_UNCLICKED: 
+    for row in range(data["rows"]):
+        for col in range(data["cols"]):
+            if grid[row][col] == SHIP_UNCLICKED: 
                 canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="yellow")
             else:
                 canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="blue")
@@ -163,8 +162,10 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
-
+    ship.sort()
+    if ship[0][0]+1==ship[1][0]==ship[2][0]-1 and ship[0][1]==ship[1][1]==ship[1][1]:
+        return True
+    return False
 
 '''
 isHorizontal(ship)
@@ -172,8 +173,10 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
-
+    ship.sort()
+    if ship[0][1]+1==ship[1][1]==ship[2][1]-1 and ship[0][0]==ship[1][0]==ship[1][0]:
+        return True
+    return False
 
 '''
 getClickedCell(data, event)
@@ -182,7 +185,6 @@ Returns: list of ints
 '''
 def getClickedCell(data, event):
     return
-
 
 '''
 drawShip(data, canvas, ship)
@@ -324,4 +326,7 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
+    #runSimulation(500, 500)
+    #test.testIsVertical()
+    test.testIsVertical()
+    test.testIsHorizontal()
