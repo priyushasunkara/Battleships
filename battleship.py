@@ -52,14 +52,7 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["user Board"],True)
     drawShip(data,userCanvas,data["temporary_ship"])
-    drawGrid(data,compCanvas,data["computerBoard"],False)
-    if data["winner"]=="user":
-        drawGameOver(data,userCanvas)
-    elif data["winner"]=="comp":
-        drawGameOver(data,compCanvas)
-    elif data["winner"]=="draw":
-        drawGameOver(data,userCanvas)
-        drawGameOver(data,compCanvas)
+    drawGrid(data,compCanvas,data["computerBoard"],True)
     return
 
 
@@ -213,7 +206,6 @@ def getClickedCell(data, event):
     y_coordinate=int(event.y/data["cellSize"])
     return[y_coordinate,x_coordinate]
 
-
 '''
 drawShip(data, canvas, ship)
 Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
@@ -259,7 +251,7 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
-    if data["numUserShip"]==5:
+    if data["numUserShips"]==5:
         print("You can start the game")
         return
     if [row,col] not in data["temporary_ship"]:
@@ -409,6 +401,3 @@ if __name__ == "__main__":
     ## Finally, run the simulation to test it manually ##
     #test.week3Tests()
     runSimulation(500, 500)
-    #test.testUpdateBoard()
-    #test.testGetComputerGuess()
-    #test.testIsGameOver()
