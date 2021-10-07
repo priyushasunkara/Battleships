@@ -37,7 +37,7 @@ def makeModel(data):
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
     data["temporary_ship"]=[]
     data["numUserShip"]=0
-    data["winner"]="draw"
+    data["winner"]=None
     data["max_turns"]=50
     data["current_turns"]=0
     return 
@@ -63,7 +63,8 @@ Parameters: dict mapping strs to values ; key event object
 Returns: None
 '''
 def keyPressed(data, event):
-    pass
+    if(event):
+        makeModel(data)
 
 
 '''
@@ -330,11 +331,14 @@ Returns: None
 '''
 def drawGameOver(data, canvas):
     if(data["winner"]=="user"):
-        canvas.create_text(100, 50, text="Congrats!! You Won!!", fill="white", font=("Arial 13 bold"))
+        canvas.create_text(100, 50, text="Congrats!! You Won!!", fill="black", font=("Arial 13 bold"))
+        canvas.create_text(150, 70, text="Press Enter to play again!!", fill="black", font=("Arial 13 bold"))
     if(data["winner"]=="comp"):
-        canvas.create_text(100 ,50, text="Try Again!! You Lost!!", fill="white", font=("Arial 13 bold"))
+        canvas.create_text(100 ,50, text="Try Again!! You Lost!!", fill="black", font=("Arial 13 bold"))
+        canvas.create_text(150, 70, text="Press Enter to play again!!", fill="black", font=("Arial 13 bold"))
     if(data["winner"]=="draw"):
-        canvas.create_text(100 ,50, text="Draw Match!! Out of moves!!", fill="white", font=("Arial 11 bold"))
+        canvas.create_text(100 ,50, text="Draw Match!! Out of moves!!", fill="black", font=("Arial 11 bold"))
+        canvas.create_text(150, 70, text="Press Enter to play again!!", fill="black", font=("Arial 13 bold"))
     return
 
 
