@@ -49,9 +49,9 @@ Returns: None
 '''
 
 def makeView(data, userCanvas, compCanvas):
-    canvas= drawGrid(data,userCanvas,data["user Board"],True)
-    userCanvas=drawShip(data,userCanvas,data["temporary_ship"])
-    compCanvas= drawGrid(data,compCanvas,data["computerBoard"],True)
+    drawGrid(data,userCanvas,data["user Board"],True)
+    drawShip(data,userCanvas,data["temporary_ship"])
+    drawGrid(data,compCanvas,data["computerBoard"],True)
     return
 
 
@@ -249,7 +249,7 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
-    if data["numUserShip"]==5:
+    if data["numUserShips"]==5:
         print("You can start the game")
         return
     if [row,col] not in data["temporary_ship"]:
