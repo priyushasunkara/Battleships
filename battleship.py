@@ -37,10 +37,12 @@ def makeModel(data):
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
     data["temporary_ship"]=[]
     data["numUserShip"]=0
-    data["winner"]=None
+    data["winner"]="draw"
+    data["max_turns"]=50
+    data["current_turns"]=0
     return 
  
- 
+
 '''
 makeView(data, userCanvas, compCanvas)
 Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
@@ -266,11 +268,11 @@ Parameters: dict mapping strs to values ; 2D list of ints ; int ; int ; str
 Returns: None
 '''
 def updateBoard(data, board, row, col, player):
-    if board==data["computerBoard"] or data["user Board"]:
-        if board[row][col]==SHIP_UNCLICKED:
-            board[row][col]=SHIP_CLICKED
-        elif board[row][col]==EMPTY_UNCLICKED:
-            board[row][col]=EMPTY_CLICKED
+    #if board==data["computerBoard"] or data["user Board"]:
+    if board[row][col]==SHIP_UNCLICKED:
+        board[row][col]=SHIP_CLICKED
+    elif board[row][col]==EMPTY_UNCLICKED:
+        board[row][col]=EMPTY_CLICKED
     if isGameOver(board):
         data["winner"]=player
     return
@@ -288,6 +290,9 @@ def runGameTurn(data, row, col):
         updateBoard(data,data["computerBoard"],row,col,"user")
     x=getComputerGuess(data["user Board"])
     updateBoard(data,data["user Board"],x[0],x[1],"comp")
+    data["current_turns"]=data["current_turns"]+1
+    if data["current_turns"]==data["max_turns"]:
+        data["winner"]="draw"
 
 
 '''
@@ -328,6 +333,8 @@ def drawGameOver(data, canvas):
         canvas.create_text(100, 50, text="Congrats!! You Won!!", fill="white", font=("Arial 13 bold"))
     if(data["winner"]=="comp"):
         canvas.create_text(100 ,50, text="Try Again!! You Lost!!", fill="white", font=("Arial 13 bold"))
+    if(data["winner"]=="draw"):
+        canvas.create_text(100 ,50, text="Draw Match!! Out of moves!!", fill="white", font=("Arial 11 bold"))
     return
 
 
@@ -388,4 +395,5 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
+    #test.week3Tests()
     runSimulation(500, 500)
