@@ -37,11 +37,10 @@ def makeModel(data):
     data["computerBoard"] = addShips(data["computerBoard"],data["numShips"]) 
     data["temporary_ship"]=[]
     data["numUserShip"]=0
+    data["winner"]=None
     return 
  
-
-
-
+ 
 '''
 makeView(data, userCanvas, compCanvas)
 Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
@@ -74,7 +73,7 @@ def mousePressed(data, event, board):
     cell=getClickedCell(data,event)
     if board=="user":
         clickUserBoard(data,cell[0],cell[1])
-    else:
+    elif board=="comp":
         runGameTurn(data,cell[0],cell[1])
     return
 
@@ -272,6 +271,8 @@ def updateBoard(data, board, row, col, player):
             board[row][col]=SHIP_CLICKED
         elif board[row][col]==EMPTY_UNCLICKED:
             board[row][col]=EMPTY_CLICKED
+    if isGameOver(board):
+        data["winner"]=player
     return
 
 
@@ -285,6 +286,8 @@ def runGameTurn(data, row, col):
         return
     else:
         updateBoard(data,data["computerBoard"],row,col,"user")
+    x=getComputerGuess(data["user Board"])
+    updateBoard(data,data["user Board"],x[0],x[1],"comp")
 
 
 '''
@@ -293,7 +296,13 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
-    return
+    index=0
+    while(index<1):
+        row=random.randint(0,9)
+        col=random.randint(0,9)
+        if(board[row][col]==SHIP_UNCLICKED) or (board[row][col]==EMPTY_UNCLICKED):
+            index=index+1
+            return[row,col]
 
 
 '''
@@ -302,7 +311,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
-    return
+    for row in range(len(board)):
+        for col in range(len(board)):
+            if board[row][col]==SHIP_UNCLICKED:
+                return False
+    return True
 
 
 '''
@@ -311,6 +324,10 @@ Parameters: dict mapping strs to values ; Tkinter canvas
 Returns: None
 '''
 def drawGameOver(data, canvas):
+    if(data["winner"]=="user"):
+        canvas.create_text(100, 50, text="Congrats!! You Won!!", fill="white", font=("Arial 13 bold"))
+    if(data["winner"]=="comp"):
+        canvas.create_text(100 ,50, text="Try Again!! You Lost!!", fill="white", font=("Arial 13 bold"))
     return
 
 
