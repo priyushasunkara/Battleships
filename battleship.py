@@ -204,7 +204,6 @@ def getClickedCell(data, event):
     y_coordinate=int(event.y/data["cellSize"])
     return[y_coordinate,x_coordinate]
 
-
 '''
 drawShip(data, canvas, ship)
 Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
@@ -373,4 +372,3 @@ if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
-    #test.testUpdateBoard()
