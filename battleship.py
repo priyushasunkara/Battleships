@@ -74,6 +74,8 @@ def mousePressed(data, event, board):
     cell=getClickedCell(data,event)
     if board=="user":
         clickUserBoard(data,cell[0],cell[1])
+    else:
+        runGameTurn(data,cell[0],cell[1])
     return
 
 #### WEEK 1 ####
@@ -154,9 +156,15 @@ def drawGrid(data, canvas, grid, showShips):
         for col in range(data["cols"]):
             if grid[row][col] == SHIP_UNCLICKED: 
                 canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="yellow")
-            else:
+            elif grid[row][col]==EMPTY_UNCLICKED:
                 canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="blue")
-    return
+            elif grid[row][col] == SHIP_CLICKED:
+                canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="red")
+            elif grid[row][col]==EMPTY_CLICKED:
+                canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="white")
+            if(grid[row][col]==SHIP_UNCLICKED) and (showShips==False):
+                canvas.create_rectangle(data["cellSize"]*col, data["cellSize"]*row, data["cellSize"]*(col+1), data["cellSize"]*(row+1), fill="blue")
+    return data
 
 
 
@@ -259,6 +267,11 @@ Parameters: dict mapping strs to values ; 2D list of ints ; int ; int ; str
 Returns: None
 '''
 def updateBoard(data, board, row, col, player):
+    if board==data["computerBoard"] or data["user Board"]:
+        if board[row][col]==SHIP_UNCLICKED:
+            board[row][col]=SHIP_CLICKED
+        elif board[row][col]==EMPTY_UNCLICKED:
+            board[row][col]=EMPTY_CLICKED
     return
 
 
@@ -268,7 +281,10 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def runGameTurn(data, row, col):
-    return
+    if(data["computerBoard"][row][col]==SHIP_CLICKED) or (data["computerBoard"][row][col]==EMPTY_CLICKED):
+        return
+    else:
+        updateBoard(data,data["computerBoard"],row,col,"user")
 
 
 '''
